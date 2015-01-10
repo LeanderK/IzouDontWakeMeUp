@@ -1,0 +1,20 @@
+#to suppress Events simply add properties with the following syntax
+#
+#
+#NOTE: This plugin will by default ignore alarms!
+#you can disable this behaviour by adding the property: ignoreAlarm = false
+#
+#
+#
+#the name of of the properties has to be: silence<uniqueNumber> eg silence12
+#
+#the following variables are allowed:
+#time has to be written int the syntax: hh:mm (24-hours)
+#
+#the following conditions are allowed:
+#from <time> : after <time> returns true,  until specified or midnight
+#to <time> : until the <time> returns true, from specified or midnight
+#
+#examples:
+#silence3 = from 17:00 to 08:00
+#silence18 = from 08:00 to 15:00
