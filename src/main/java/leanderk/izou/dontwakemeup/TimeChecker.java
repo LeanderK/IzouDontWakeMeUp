@@ -26,6 +26,8 @@ public class TimeChecker {
      */
     public boolean matches() {
         input = input.trim();
+        if (!input.matches("((from|to)\\s\\d\\d:\\d\\d\\s?)+"))
+            return false;
         LocalTime currentTime = LocalTime.now();
         Matcher matcher = Pattern.compile("((from|to)\\s\\d\\d:\\d\\d)").matcher(input);
         LocalTime tempTime = null;
@@ -42,8 +44,13 @@ public class TimeChecker {
                     if (currentTime.isBefore(time))
                         return true;
                 } else {
-                    if (currentTime.isAfter(tempTime) && currentTime.isBefore(time))
+                    if (currentTime.isAfter(tempTime) && currentTime.isBefore(time)) {
                         return true;
+                    //for example over night (18:00 to 08:00)
+                    } else if (time.isBefore(tempTime)) {
+                        if (!(currentTime.isBefore(tempTime) && currentTime.isAfter(time)))
+                            return true;
+                    }
                     tempTime = null;
                 }
             }

@@ -39,6 +39,13 @@ public class TimeCheckerTest {
         assertTrue(new TimeChecker(input).matches());
     }
 
+    @Test
+    public void testMatchesOverNight() throws Exception {
+        String input = createPropertiesValue(FROM, LocalTime.now().minusMinutes(45));
+        input = input + " " + createPropertiesValue(TO, LocalTime.of(8, 0));
+        assertTrue(new TimeChecker(input).matches());
+    }
+
     public String createPropertiesValue(String id, LocalTime time) {
         return id + " " + time.format(DateTimeFormatter.ofPattern("HH:mm"));
     }

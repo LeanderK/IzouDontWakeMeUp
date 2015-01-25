@@ -1,8 +1,8 @@
 package leanderk.izou.dontwakemeup;
 
-import intellimate.izou.addon.PropertiesContainer;
 import intellimate.izou.events.Event;
 import intellimate.izou.events.EventsController;
+import intellimate.izou.properties.PropertiesContainer;
 import intellimate.izou.system.Context;
 
 /**

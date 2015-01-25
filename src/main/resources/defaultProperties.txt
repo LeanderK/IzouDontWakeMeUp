@@ -18,3 +18,4 @@
 #examples:
 #silence3 = from 17:00 to 08:00
 #silence18 = from 08:00 to 15:00
+silence1 = from 20:00 to 08:00
