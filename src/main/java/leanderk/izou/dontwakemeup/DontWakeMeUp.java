@@ -1,17 +1,19 @@
 package leanderk.izou.dontwakemeup;
 
-import intellimate.izou.activator.Activator;
-import intellimate.izou.addon.AddOn;
-import intellimate.izou.contentgenerator.ContentGenerator;
-import intellimate.izou.events.EventsController;
-import intellimate.izou.output.OutputExtension;
-import intellimate.izou.output.OutputPlugin;
+import org.intellimate.izou.sdk.activator.Activator;
+import org.intellimate.izou.sdk.addon.AddOn;
+import org.intellimate.izou.sdk.contentgenerator.ContentGenerator;
+import org.intellimate.izou.sdk.events.EventsController;
+import org.intellimate.izou.sdk.output.OutputExtension;
+import org.intellimate.izou.sdk.output.OutputPlugin;
+import ro.fortsoft.pf4j.Extension;
 
 /**
  * @author LeanderK
  * @version 1.0
  */
-public class DontWakeMeUp extends AddOn{
+@Extension
+public class DontWakeMeUp extends AddOn {
     public static final String ID = DontWakeMeUp.class.getCanonicalName();
 
     public DontWakeMeUp() {
@@ -35,7 +37,9 @@ public class DontWakeMeUp extends AddOn{
 
     @Override
     public EventsController[] registerEventController() {
-        return new EventsController[0];
+        EventsController[] eventsControllers = new EventsController[1];
+        eventsControllers[0] = new HeyStop(getContext());
+        return eventsControllers;
     }
 
     @Override
