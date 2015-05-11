@@ -11,11 +11,33 @@ import org.intellimate.izou.sdk.events.EventsController;
  */
 public class HeyStop extends EventsController {
     public static final String ID = HeyStop.class.getCanonicalName();
-    public static final String KEY_IGNORE_ALARM = "ignoreAlarm";
     public static final String KEY_SILENCE = "silence";
 
     public HeyStop(Context context) {
         super(context, ID);
+    }
+
+    @Override
+    public boolean controlEventDispatcher(EventModel eventModel) {
+        boolean control = getContext().getPropertiesAssistant().getProperties().stringPropertyNames().stream()
+                .filter(key -> key.startsWith(KEY_SILENCE))
+                .map(key -> getContext().getPropertiesAssistant().getProperties().getProperty(key))
+                .map(TimeChecker::new)
+                .noneMatch(TimeChecker::matches);
+        if (!control)
+            return true;
+        if (eventModel.containsDescriptor(CommonEvents.Response.FULL_RESPONSE_DESCRIPTOR))
+            eventModel.removeDescriptor(CommonEvents.Response.FULL_RESPONSE_DESCRIPTOR);
+        if (eventModel.containsDescriptor(CommonEvents.Response.MAJOR_RESPONSE_DESCRIPTOR))
+            eventModel.removeDescriptor(CommonEvents.Response.MAJOR_RESPONSE_DESCRIPTOR);
+        if (eventModel.containsDescriptor(CommonEvents.Response.MINOR_RESPONSE_DESCRIPTOR))
+            eventModel.removeDescriptor(CommonEvents.Response.MINOR_RESPONSE_DESCRIPTOR);
+        if (eventModel.containsDescriptor(CommonEvents.ALARM_DESCRIPTOR))
+            return true;
+        if (!eventModel.containsDescriptor(CommonEvents.Descriptors.NOT_INTERRUPT) ||
+                !eventModel.containsDescriptor(CommonEvents.Descriptors.STOP_DESCRIPTOR))
+            return false;
+        return true;
     }
 
     /**
@@ -26,20 +48,6 @@ public class HeyStop extends EventsController {
      */
     @Override
     public boolean controlEvents(EventModel eventModel) {
-        if (eventModel.containsDescriptor(CommonEvents.ALARM_DESCRIPTOR)) {
-            String value = getContext().getPropertiesAssistant().getProperties().getProperty(KEY_IGNORE_ALARM);
-            //noinspection RedundantIfStatement
-            if (value != null && value.equals("true")) {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-        return getContext().getPropertiesAssistant().getProperties().stringPropertyNames().stream()
-                .filter(key -> key.startsWith(KEY_SILENCE))
-                .map(key -> getContext().getPropertiesAssistant().getProperties().getProperty(key))
-                .map(TimeChecker::new)
-                .noneMatch(TimeChecker::matches);
+        return true;
     }
 }
